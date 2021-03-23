@@ -38,13 +38,15 @@ function showScores() {
     var gameOverHTML = "<h1 >Result</h1>";
 
       if      (quiz.score==1 ) {
-    gameOverHTML =   "<h2 id='score'>  " + `<div><img src="img/gatto1.jfif" alt=""></div>` + "</h2>";
+    gameOverHTML =   "<h2 id='score'>  " + `<div><img src="img/gatto1.jfif" alt=""></div>` +"sei un persiano"+"</br>"+"il tuo carattere e' bla bla bla..."+ "</h2>";
       }else if(quiz.score==2){
-        gameOverHTML =  "<h2 id='score'>  " +`<div><img src="img/gatto2.jfif" alt=""></div>` + "</h2>";
+        gameOverHTML =  "<h2 id='score'>  " +`<div><img src="img/gatto2.jfif" alt=""></div>` +"sei un malese"+ "</h2>";
         }else if(quiz.score==3){
-        gameOverHTML =  "<h2 id='score'>  " +`<div><img src="img/gatto3.jfif" alt=""></div>` + "</h2>";
+        gameOverHTML =  "<h2 id='score'>  " +`<div><img src="img/gatto3.jfif" alt=""></div>` + "sei un malese"+"</h2>";
          }else if(quiz.score==4){
-         gameOverHTML = "<h2 id='score'>  " + `<div><img src="img/gatto4.jfif" alt=""></div> `+ "</h2>";
+         gameOverHTML = "<h2 id='score'>  " + `<div><img src="img/gatto4.jfif" alt=""></div> `+ "sei un malese"+"</h2>";
+       }else if(quiz.score==0){
+         gameOverHTML = "<h2 id='score'>  " + `<div><img src="img/gatto4.jfif" alt=""></div> `+ "sei un malese"+"</h2>";
          }
     var element = document.getElementById("quiz");
     element.innerHTML = gameOverHTML;

@@ -3,7 +3,76 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Quiz</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <style media="screen">
+    body {
+        background-color: #00F5DC;
+    }
+
+    .grid {
+        width: 500px;
+        height: 500px;
+        margin: 0 auto;
+        background-color:#00A897;
+        padding: 10px 50px 50px 50px;
+        border-radius: 50px;
+        border: 2px solid #cbcbcb;
+        box-shadow: 10px 15px 5px #cbcbcb;
+    }
+
+    .grid h1 {
+        font-family: "sans-serif";
+        background-color:#F54E00;
+        font-size: 60px;
+        text-align: center;
+        color: #ffffff;
+        padding: 2px 0px;
+        border-radius: 50px;
+    }
+
+    #score {
+        color: black;
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .grid #question {
+        font-family: "monospace";
+        font-size: 30px;
+        color: black;
+    }
+
+    .buttons {
+        margin-top: 30px;
+    }
+
+    #btn0, #btn1, #btn2, #btn3 {
+        background-color:#F54E00;
+        width: 200px;
+        font-size: 20px;
+        color: #fff;
+        border: 1px solid #1D3C6A;
+        border-radius: 50px;
+        margin: 10px 40px 10px 0px;
+        padding: 10px 10px;
+    }
+
+    #btn0:hover, #btn1:hover, #btn2:hover, #btn3:hover {
+        cursor: pointer;
+        background-color: #FF9C6E ;
+        color:black;
+    }
+
+    #btn0:focus, #btn1:focus, #btn2:focus, #btn3:focus {
+        outline: 0;
+    }
+
+    #progress {
+        color: #2b2b2b;
+        font-size: 18px;
+    }
+
+    </style>
+    <!-- <link rel="stylesheet" type="text/css" href="css/style.css"> -->
 </head>
 <body>
     <div class="grid">
@@ -26,9 +95,117 @@
             </footer>
         </div>
     </div>
+<script>
+function Quiz(questions) {
+    this.score = 0;
+    this.questions = questions;
+    this.questionIndex = 0;
+}
 
-<script src="js/quiz.js"></script>
+Quiz.prototype.getQuestionIndex = function() {
+    return this.questions[this.questionIndex];
+}
+
+Quiz.prototype.guess = function(answer) {
+    if(this.getQuestionIndex().isCorrectAnswer(answer)) {
+        this.score++;
+    }
+
+    this.questionIndex++;
+}
+
+Quiz.prototype.isEnded = function() {
+    return this.questionIndex === this.questions.length;
+}
+
+</script>
+<script>
+function Question(text, choices, answer) {
+    this.text = text;
+    this.choices = choices;
+    this.answer = answer;
+}
+
+Question.prototype.isCorrectAnswer = function(choice) {
+    return this.answer === choice;
+}
+
+</script>
+<script>
+function populate() {
+    if(quiz.isEnded()) {
+        showScores();
+    }
+    else {
+        // show question
+        var element = document.getElementById("question");
+        element.innerHTML = quiz.getQuestionIndex().text;
+
+        // show options
+        var choices = quiz.getQuestionIndex().choices;
+        for(var i = 0; i < choices.length; i++) {
+            var element = document.getElementById("choice" + i);
+            element.innerHTML = choices[i];
+            guess("btn" + i, choices[i]);
+        }
+
+        showProgress();
+    }
+};
+
+function guess(id, guess) {
+    var button = document.getElementById(id);
+    button.onclick = function() {
+        quiz.guess(guess);
+        populate();
+    }
+};
+
+
+function showProgress() {
+    var currentQuestionNumber = quiz.questionIndex + 1;
+    var element = document.getElementById("progress");
+    element.innerHTML = "Question " + currentQuestionNumber + " of " + quiz.questions.length;
+};
+
+function showScores() {
+    var gameOverHTML = "<h1 >Result</h1>";
+
+      if      (quiz.score==1 ) {
+    gameOverHTML =   "<h2 id='score'>  " + `<div><img src="img/gatto1.jfif" alt=""></div>` +"sei un persiano"+"</br>"+"il tuo carattere e' bla bla bla..."+ "</h2>";
+      }else if(quiz.score==2){
+        gameOverHTML =  "<h2 id='score'>  " +`<div><img src="img/gatto2.jfif" alt=""></div>` +"sei un malese"+ "</h2>";
+        }else if(quiz.score==3){
+        gameOverHTML =  "<h2 id='score'>  " +`<div><img src="img/gatto3.jfif" alt=""></div>` + "sei un malese"+"</h2>";
+         }else if(quiz.score==4){
+         gameOverHTML = "<h2 id='score'>  " + `<div><img src="img/gatto4.jfif" alt=""></div> `+ "sei un malese"+"</h2>";
+       }else if(quiz.score==0){
+         gameOverHTML = "<h2 id='score'>  " + `<div><img src="img/gatto4.jfif" alt=""></div> `+ "sei un malese"+"</h2>";
+         }
+    var element = document.getElementById("quiz");
+    element.innerHTML = gameOverHTML;
+};
+
+// create questions
+var questions = [
+    new Question("Come ti presenti nell’abbigliamento?", ["Sempre molto elegante", "Abbigliamento sobrio con colori tenui","Vesti sempre di nero", "I tuoi vestiti non possono prescindere da una trama animalier"], "I tuoi vestiti non possono prescindere da una trama animalier"),
+    new Question("Come descriveresti il tuo carattere?", ["Gentile e pacato", "Vivace estroverso avventuroso", "Discreto e affettuoso", "Molto volubile"], "Discreto e affettuoso"),
+    new Question("Come occupi il tuo tempo libero?.", ["Mi piace trascorrere molto tempo da sola", "Mi piace passeggiare o correre all’aria aperta","i piace trascorrere tempo con gli amici e amo le coccole con il partner", "Ho una sola amica con cui faccio qualunque cosa"], "Ho una sola amica con cui faccio qualunque cosa"),
+    new Question("Come descriveresti il rapporto ideale tra estetica e sostanza?", ["La mia estetica conta molto e prevarica spesso la sostanza", "La mia estetica non pregiudica la sostanza", "Sta tutto nellequilibrio trovo affascinante essere discretiti", "Non importa l’estetica ma i comportamenti e la generosità"], "Non importa l’estetica ma i comportamenti e la generosità"),
+    // new Question("Come descriveresti il rapporto ideale tra estetica e sostanza?", ["Language", "Library", "Framework", "All"], "Framework")
+];
+
+
+// create quiz
+var quiz = new Quiz(questions);
+
+// display quiz
+populate();
+
+//
+</script>
+<!-- <script src="js/quiz.js"></script>
 <script src="js/question.js"></script>
-<script src="js/app.js"></script>
+<script src="js/app.js"></script> -->
 </body>
 </html>
